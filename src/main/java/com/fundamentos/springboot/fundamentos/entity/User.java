@@ -3,6 +3,7 @@ package com.fundamentos.springboot.fundamentos.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +20,7 @@ public class User {
     @Column(length = 50)
     private String email;
     @Column()
-    private Date birthday;
+    private LocalDate birthday;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Post> posts = new ArrayList<>();
@@ -27,12 +28,10 @@ public class User {
     public User() {
     }
 
-    public User(long id, String name, String email, Date birthday, List<Post> posts) {
-        this.id = id;
+    public User(String name, String email, LocalDate birthday) {
         this.name = name;
         this.email = email;
         this.birthday = birthday;
-        this.posts = posts;
     }
 
     public long getId() {
@@ -59,11 +58,11 @@ public class User {
         this.email = email;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
