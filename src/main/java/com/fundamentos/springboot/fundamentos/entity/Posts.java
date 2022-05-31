@@ -1,33 +1,41 @@
 package com.fundamentos.springboot.fundamentos.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "post")
-public class Post {
+public class Posts {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //identity para que no se siga el contador de otros registros
     @Column(name = "id_post", nullable = false, unique = true)
-    private long id;
-    @Column(name = "description", length = 255)
+    private Long id;
+    @Column(name = "description", length = 250)
     private String description;
+
     @ManyToOne
+    @JoinColumn(name = "user_id") //No necesario para el ejemplo del curso pero se puede explicar
+    @JsonBackReference
     private User user;
 
-    public Post() {
+    public Posts() {
     }
 
-    public Post(long id, String description, User user) {
-        this.id = id;
+    public Posts(String description, User user) {
         this.description = description;
         this.user = user;
     }
 
-    public long getId() {
+    public Posts(String description) {
+        this.description = description;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -49,10 +57,9 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post{" +
+        return "Posts{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
-                ", user=" + user +
                 '}';
     }
 }

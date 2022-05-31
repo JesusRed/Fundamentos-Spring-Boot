@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -45,14 +46,27 @@ public class FundamentosApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        beforeClasses();
+        //beforeClasses();
         saveUsersInDatabase();
+        getInfoJpqlUser();
+    }
+
+    public void getInfoJpqlUser(){
+        LOGGER.info("User by findbyemail: " + userRepository.findByUserEmail("juan@mail.com").
+                orElseThrow(()-> new RuntimeException("user not exists")));
+
+        userRepository.findAndSort("J", Sort.by("id").descending())
+                .stream()
+                .forEach(user -> LOGGER.info("UserList with Sort method " +user));
     }
 
     private void saveUsersInDatabase() {
-        User user1 = new User("Red", "red@mail.com", LocalDate.of(2022, 2, 20));
-        User user2 = new User("Galahad", "galahad@mail.com", LocalDate.of(2022, 3, 10));
-        List<User> list = Arrays.asList(user1, user2);
+        User user1 = new User("Juan", "juan@mail.com", LocalDate.of(2022, 12, 12));
+        User user2 = new User("Wan", "wan@mail.com", LocalDate.of(1998, 11, 24));
+        User user3 = new User("Oan", "oan@mail.com", LocalDate.of(1997, 10, 1));
+        User user4 = new User("Yuan", "yuan@mail.com", LocalDate.of(1996, 9, 28));
+        User user5 = new User("Jooan", "jooan@mail.com", LocalDate.of(1995, 8, 13));
+        List<User> list = Arrays.asList(user1, user2, user3, user4, user5);
         userRepository.saveAll(list);
     }
 
